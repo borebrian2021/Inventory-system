@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SAINA</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="theme-color" content="#581845">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#581845">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#581845">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #581845;color:white">
+            <div class="container">
+                <img src="~/Images/saina_logo.png" class="top_logo  " />
+                <a class="navbar-brand m-2 text-white" asp-area="" asp-controller="Home" asp-action="Index">SUPREME SAI ENTERPRISE</a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>}
+                            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                        <a class="nav-link  text-dark btn btn-light" asp-area="" asp-controller="Home" asp-action="log_out"><i class="fa fa-power-off"></i>&nbsp;Log out</a>}
+                                    </li>
+                                    <li class="nav-item">
+                                    </li>
+                                </ul>
+                            </div>
+                                        </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br /> <br />
+    <br />
+    <br />
+    <br />
+    <br /> <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <footer class=" footer text-muted">
+        <div class="container-fluid text-center text-white">
+            <p> &copy;Supremesai Enterprises |@DateTime.Now.Year</p> 
+        </div>
+    </footer>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+        function d() {
+            //$("#to_pf_table").tableHTMLExport({
+            //    type: 'pdf',
+            //    orientation: 'p'
+            //});
+
+            //var img = new Image()
+            var doc = new jsPDF();
+            //img.src = 'wwwroot/images/logo2.png'
+            //doc.addImage(img, 'png', 10, 78, 12, 15)
+            var htmlstring = '';
+            var tempVarToCheckPageHeight = 0;
+            var pageHeight = 0;
+            //pageHeight = doc.internal.pageSize.height;
+            //specialElementHandlers = {
+            //        // element with id of "bypass" - jQuery style selector
+            //        '#bypassme': function(element, renderer) {
+            //        // true = "handled elsewhere, bypass text extraction"
+            //        return true
+            //    }
+            //};
+            //margins = {
+            //        top: 10,
+            //    bottom: 10,
+            //    left: 10,
+            //    right: 10,
+            //    width: 100
+            //};
+            var y = 20;
+            doc.setLineWidth(2);
+            //doc.text(200, y = y + 30, "TOTAL MARKS OF STUDENTS");
+            doc.autoTable({
+                html: '#s_list',
+            });
+            doc.save('@ViewBag.client_name'+'.pdf');
+
+
+
+
+
+
+        };
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('#deliveries').DataTable();
+            $('#dtBasicExample1').DataTable();
+            $('#clients').DataTable();
+            $('#s_list').DataTable({
+                select: true
+            });
+            $('.dataTables_length').addClass('bs-select');
+             var success = @((TempData["message"] != null).ToString().ToLower());
+            var x = '@TempData["message"]';
+
+            if (success == true) {
+                sweetAlert('@TempData["header"]', '@TempData["message"]', '@TempData["type"]');
+
+            };
+            $('#rec').modal("show");
+            $('#inv').modal("show");
+
+        });
+
+    function generate(lpo,  id,ms) {
+        $('#d_no').val(id);
+        $('#lpo_i').val(lpo);
+        $('#ms_').val(ms);
+
+        $('#exampleModalCenter').modal("show");
+    }
+    function modify(name, phone, id, balance) {
+        $('#id_').val(id);
+        $('#name_').val(name);
+        $('#balance_').val(balance);
+        $('#phone_').val(phone);
+        $('#modify_client').modal("show");
+    }
+    </script>
+</body>
+</html>
